@@ -1,0 +1,63 @@
+{% extends 'app/dashboard.html' %}
+
+{% block content %}
+<div class="content">
+    <div class="container">
+        <button type="button" class="btn btn-success" style="float: right" data-bs-toggle="modal" data-bs-target="#addtestModal">Add subject</button>
+        <div class="col-lg-6">
+            <div class="card">
+                    <div class="modal fade" id="addtestModal" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title"><b>ADD SUBJECT</b></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start">
+                            <form accept-charset="utf-8" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" name="name" placeholder="Please input a name" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Upload image</label>
+                                    <input type="file" name="image" placeholder="Please input subject name" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <input type="text" name="description" placeholder="Description..." class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for subject in subjects %}
+            <div class="col-sm-6 col-md-6 col-lg-3 mt-3" style="display: inline-block;">
+                <div class="card" style="padding: 10px 0;">
+                    <div class="content">
+                        <p style="text-align: left;">Subject name: <b>{{subject.name}}</b></p>
+                    </div>
+                    <div>
+                        <img style="width: 99%; height: 300px;" src="{{ subject.imageURL  }}" alt="image">
+                    </div>
+                    <div class="content">
+                        <p>Number of categories: {{ subject.subject_categories_set.all.count }}</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-success" style="margin-left: 50px;"><a href="{% url 'subject_categories' subject.id %}">View categories</a></button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

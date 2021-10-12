@@ -1,0 +1,18 @@
+{% extends 'app/main.html' %}
+{% block content %}
+{% load static %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="col-12 col-md-9" style="margin-bottom: 80px; margin-top: 100px">
+            <select name="select" id="select" class="form-control">
+                <option value="" disabled selected hidden>Fan nomi tanlang</option>
+        {% for subject in subjects %}
+                <option  value="{{ subject.id }}">{{ subject.name }}</option>
+        {% endfor %}
+            </select>
+        </div>
+        <button id="btnSubmit" type="submit" style="background-color: #2e7d32; margin-left: 550px; margin-bottom: 100px" disabled>
+            <a><b>Testni boshlash</b></a>
+        </button>
+    </form>
+{% endblock %}

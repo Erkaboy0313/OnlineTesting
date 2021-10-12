@@ -1,0 +1,19 @@
+.own{
+    width: 500px;
+    min-height: 150px;
+    background-color: floralwhite;
+    border-radius: 5px;
+    display: none;
+    position: fixed;
+    left: 35%;
+    transition-delay: 1s;
+}
+.save{
+    margin-left: 370px;
+}
+.pathtotext{
+
+}
+.cancel{
+    margin-top: 10px;
+}

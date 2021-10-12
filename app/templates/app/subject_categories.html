@@ -1,0 +1,117 @@
+{% extends 'app/dashboard.html' %}
+{% block content %}
+{% load static %}
+<button type="button" class="btn btn-success" style="float: right; margin: 10px ;" data-bs-toggle="modal" data-bs-target="#AddCategoryModal"><i class="fa fa-folder"></i> Add category</button>
+<button type="button" class="btn btn-success" style="float: right; margin: 10px 10px;" data-bs-toggle="modal" data-bs-target="#AddtestfileModal"><i class="fa fa-folder"></i> Add test files</button><br>
+<div class="content" style="margin-top: 40px;">
+    <div class="container">
+
+        <!-- Modal -->
+        <div class="modal fade" id="btnUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <form style="overflow: scroll"  action="{% url 'url_test' %}" method="post">
+                    {% csrf_token %}
+                  <div  id="subject_test" class="modal-body">
+
+                  </div>
+                    <button type="submit" class="btn btn-primary">Understood</button>
+                </form>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-lg-6">
+                <div class="card">
+                    <div class="modal fade" id="AddCategoryModal" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title"><b>ADD SUBJECT CATEGORY</b></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body text-start">
+                                <form accept-charset="utf-8" method="post" enctype="multipart/form-data">
+                                   {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" name="name" placeholder="Please input a name" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Upload image</label>
+                                        <input type="file" name="image" placeholder="Please input subject name" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description</label>
+                                        <input type="text" name="description" placeholder="Description..." class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                                    </div>
+                                </form>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="AddtestfileModal" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title"><b>ADD SUBJECT CATEGORY</b></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body text-start">
+                                <form action="{% url 'add_file' %}" accept-charset="utf-8" method="post" enctype="multipart/form-data">
+                                   {% csrf_token %}
+                                   <div class="mb-3">
+                                        <label class="form-label">Select Category</label>        
+                                        <select name="test_file" class="form-control">
+                                            {% for subjects in subject_categories %}
+                                                <option value="{{ subjects.name }}">{{ subjects.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                   </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Upload file</label>
+                                        <input type="file" name="file" placeholder="Choose file" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                                    </div>
+                                </form>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+        {% csrf_token %}
+            {% for subject in subject_categories %}
+            <div class="col-sm-6 col-md-6 col-lg-3 mt-3" style="display: inline-block;">
+                <div class="card" style="padding: 10px 0;">
+                    <div class="content">
+                        <p style="text-align: left;">Subject category name: <b>{{subject.name}}</b></p>
+                    </div>
+                    <div>
+                        <img style="width: 99%; height: 300px;" src="{{ subject.imageURL }}" alt="image">
+                    </div>
+                    <div class="content">
+                        <p>Number of qustions: {{ subject.question_set.all.count }}</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#btnUpdate" onclick="update_test({{ subject.id }})">Update test</button>
+                        <button class="btn btn-outline-success"><i class="fa fa-plus"></i> Add test</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

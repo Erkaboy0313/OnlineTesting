@@ -1,0 +1,83 @@
+{% extends 'app/main.html' %}
+{% load video_tags %}
+{% block content %}
+<div class="container" style="margin-top: 90px;">
+    <div class="main-body">    
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Username</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ request.user.username }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ request.user.email }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-info " target="__blank" >Edit</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="content" style="margin-bottom: 50px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">User score</div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>№</th>
+                                            <th>Subject name</th>
+                                            <th>Tottal questions</th>
+                                            <th>Score</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for test in tests %}
+                                        <tr>
+                                            <th>{{ forloop.counter }}</th>
+                                            <th scope="row">{{ test.subject_category.name }}</th>
+                                            <td>{% tottal test %}</td>
+                                            <td>{% score test %}</td>
+                                            <td>{{ test.started_time }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
