@@ -348,7 +348,7 @@ button:focus {
     z-index: 20;
     background-position: left;
     background-repeat: no-repeat;
-    background-color: rgba(70, 69, 69, 0);
+    background-color: rgba(44, 44, 44, 0.712);
     background-size: auto 100%;
     width: 100%;
 }

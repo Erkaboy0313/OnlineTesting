@@ -1,6 +1,6 @@
 import json
 from django.shortcuts import render,redirect
-from .models import Subject, Question, Test, Answers, Subject_categories, Comment
+from .models import Subject, Question, Test, Answers, Subject_categories, Comment , Profile
 import os
 from django.core.files.storage import default_storage
 from django.contrib.auth import authenticate, login,logout
@@ -65,8 +65,8 @@ def register(request):
                 username=username
             )
             if user:
-                login(request,user)
-                return redirect(index)
+                Profile.objects.create(user = user)
+                return redirect(log_in)
     return render(request,'app/register.html',{})
 @login_required(login_url='login')
 def start(request):
@@ -78,6 +78,7 @@ def start(request):
         'subjects': subject_category
     }
     return render(request, 'app/start.html', context)
+@login_required(login_url='login')
 def home(request,id):
     subject = Subject_categories.objects.get(id=id)
     try:
@@ -147,12 +148,14 @@ def test(request):
         answer.correct = True
     answer.save()
     return JsonResponse({'status':'ok'})
+
 def users(request):
     users=User.objects.all()
     context={
         'users':users
     }
     return render(request, 'app/tables.html', context)
+
 def result(request):
     data = json.loads(request.body)
     print(data['test_id'])
@@ -160,6 +163,7 @@ def result(request):
     test.status = False
     test.save()
     return JsonResponse({'status':'ok'})
+
 def score(request,id):
     test = Test.objects.get(id = id)
     answers = Answers.objects.filter(attempt = test).order_by('id')
@@ -168,10 +172,12 @@ def score(request,id):
         'ans':answers
     }
     return render(request , 'app/result.html', context)
+
 def delete_user(request,id):
     user = User.objects.get(id=id)
     user.delete()
     return redirect('users')
+
 @login_required(login_url='login')
 def comment(request,id):
     url = request.META.get('HTTP_REFERER')
@@ -240,6 +246,11 @@ def url_test(request):
             question.save()
     return HttpResponse({'status':'OK'})
 
-def userpage(request):
+def userpage(request,id):
     tests = Test.objects.filter(student = request.user)
-    return render(request , 'app/userpage.html' , {'tests':tests})
+    profile = Profile.objects.get(user_id = id)
+    return render(request , 'app/userpage.html' , {'tests':tests , 'profile':profile})
+
+def allusers(request):
+    profiles = Profile.objects.all()
+    return render(request,'app/profile.html',context={'profiles':profiles})

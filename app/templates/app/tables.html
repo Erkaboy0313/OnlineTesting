@@ -27,7 +27,7 @@
                                             <td>{{user.username}}</td>
                                             <td>{{user.username}}</td>
                                             <td>{{user.email}}</td>
-                                            <td><button><a href="{% url 'delete_user' user.id %}"><i class="fa fa-trash"></i></a> Delete</button></td>
+                                            <td><a href="{% url 'delete_user' user.id %}" class="btn btn-alert" style="background-color: red;"><i class="fa fa-trash"></i> Delete</a></td>
                                         </tr>
                                         {% endif %}
                                         {% endfor %}

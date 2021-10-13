@@ -35,6 +35,8 @@
 
     <link href="{% static 'test/select/select2.min.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'test/css/userpage.css' %}" rel="stylesheet" media="all">
+    {% block head %}
+    {% endblock %}
     <!--[if lt IE 9]>
       <script src="{% static "test/select/html5shiv.js" %}"></script>
       <script src="{% static "test/select/respond.min.js" %}"></script>
@@ -68,9 +70,10 @@
                         <li><a class="nav-link active" href="{% url 'index' %}">Home</a></li>
                         <li><a class="nav-link" href="courses.html">Courses</a></li>
 						<li><a class="nav-link" href="{% url 'start' %}">Online test</a></li>
+						<li><a class="nav-link" href="{% url 'allusers' %}">Users</a></li>
                         {% if request.user.is_authenticated %}
                         <li><a class="nav-link" href="{% url 'log_out' %}">Log out</a></li>
-                        <li><a class="nav-link" href="{% url 'userpage' %}">{{ request.user.username }}</a></li>
+                        <li><a class="nav-link" href="{% url 'userpage' request.user.id %}">{{ request.user.username }}</a></li>
                         {% else %}
                         <li><a class="nav-link" href="{% url 'login' %}">Log in</a></li>
                         {% endif %}

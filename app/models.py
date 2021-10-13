@@ -3,12 +3,24 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    status = models.BooleanField(default=True),
+    image = models.ImageField(upload_to = 'user_images', blank=True, null = True)
+
+    @property
+    def imageURL(self):
+        try:
+            return self.image.url
+        except:
+            return ''
+
 class Subject(models.Model):
     name = models.CharField(max_length=200,null=True)
     image = models.ImageField(upload_to='subject_images', null=True, blank=True)
     description = models.TextField(null=True)
 
-    @property
+    @property   
     def imageURL(self):
         try:
             return self.image.url

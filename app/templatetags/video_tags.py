@@ -1,5 +1,5 @@
 from django import template
-from app.models import Answers
+from app.models import Answers , Test
 register = template.Library()
 
 @register.simple_tag
@@ -11,3 +11,17 @@ def score(object):
 def tottal(object):
     true = Answers.objects.filter(attempt = object).count()
     return true
+
+@register.simple_tag
+def all(object):
+    return Test.objects.filter(student = object.user).count()
+
+@register.simple_tag
+def rank(object):
+    count = Answers.objects.filter(attempt__student = object.user).count()
+    true = Answers.objects.filter(attempt__student = object.user , correct = True).count()
+    if true and count:
+        print(true/count*100)
+        return (true/count)*100
+    else:
+        return 0

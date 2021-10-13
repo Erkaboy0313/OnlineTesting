@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subject, Question, Answers, Test, Subject_categories, Comment , Test_files
+from .models import Subject, Question, Answers, Test, Subject_categories, Comment , Test_files , Profile
 
 
 admin.site.register(Subject)
@@ -9,3 +9,4 @@ admin.site.register(Answers)
 admin.site.register(Test)
 admin.site.register(Comment)
 admin.site.register(Test_files)
+admin.site.register(Profile)

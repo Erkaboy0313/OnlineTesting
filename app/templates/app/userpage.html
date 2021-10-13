@@ -21,7 +21,7 @@
                       <h6 class="mb-0">Username</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{ request.user.username }}
+                      {{ profile.user.username }}
                     </div>
                   </div>
                   <hr>
@@ -30,14 +30,31 @@
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{ request.user.email }}
+                      {{ profile.user.email }}
                     </div>
                   </div>
                   <hr>
-                  <div class="row">
-                    <div class="col-sm-12">
+                  {% if profile.user.username == request.user.username %}
+                  <div class="row" style="width: 100%;">
+                    <div class="form-check form-switch" style="width: 90%;">
+                      {% if profile.status %}
+                      <p style="display: inline-block;">Profile visibility</p>
+                      <label class="switch" style="margin-left:10%; margin-top: -20px;  display: inline-block;">
+                        <input type="checkbox" checked >
+                        <span class="slider round"></span>
+                      </label>
+                      {% else %}
+                      <label class="switch" style="margin-left: 80%; margin-top: -20px;  display: inline-block;">
+                        <input type="checkbox" >
+                        <span class="slider round"></span>
+                      </label>
+                      {% endif %}
+                    </div>
+                    <div class="col-sm-12" style="margin-left: 80%;">
                       <a class="btn btn-info " target="__blank" >Edit</a>
                     </div>
+                    {% else %}
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -65,7 +82,7 @@
                                         {% for test in tests %}
                                         <tr>
                                             <th>{{ forloop.counter }}</th>
-                                            <th scope="row">{{ test.subject_category.name }}</th>
+                                            <th scope="row"><a href="{% url 'score' test.id %}">{{ test.subject_category.name }}</a></th>
                                             <td>{% tottal test %}</td>
                                             <td>{% score test %}</td>
                                             <td>{{ test.started_time }}</td>
