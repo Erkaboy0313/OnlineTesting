@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+
+<div class="col-md-10 comment">
+    <div class="full">
+        {% if comment %}
+            {% for comment in comment %}
+                <small>{{ comment.user.username }}</small><br>
+                <b>{{ comment.comment|safe }}</b><br>
+                <small>{{ comment.time }}</small><br>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <p>No comments so far...</p>
+        {% endif %}
+    </div>
+</div>
+<div>
+    <form action="{% url 'comment' id %}" method="post"
+          style="width: 100%; margin-top: 10px; text-align: center;">
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn btn-success">Send</button>
+    </form>
+</div>
+
+</body>
+</html>

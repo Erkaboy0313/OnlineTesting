@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
+
 class Profile(models.Model):
     USER_TYPE = (
         ('Talaba','Talaba'),
@@ -25,12 +26,13 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+
 class Subject(models.Model):
-    name = models.CharField(max_length=200,null=True)
+    name = models.CharField(max_length=200, null=True)
     image = models.ImageField(upload_to='subject_images', null=True, blank=True)
     description = models.TextField(null=True)
 
-    @property   
+    @property
     def imageURL(self):
         try:
             return self.image.url
@@ -38,7 +40,8 @@ class Subject(models.Model):
             return ''
 
     def __str__(self):
-        return self.name +" "+str(self.id)
+        return self.name + " " + str(self.id)
+
 
 class Subject_categories(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True)
@@ -54,9 +57,11 @@ class Subject_categories(models.Model):
             return ''
 
     def __str__(self):
-        return self.name +" "+str(self.id)
+        return self.name + " " + str(self.id)
+
+
 class Question(models.Model):
-    subject = models.ForeignKey(Subject_categories,on_delete=models.SET_NULL,null=True)
+    subject = models.ForeignKey(Subject_categories, on_delete=models.SET_NULL, null=True)
     question = RichTextUploadingField(blank=True, null=True)
     var1 = RichTextUploadingField(blank=True, null=True)
     var2 = RichTextUploadingField(blank=True, null=True)
@@ -64,21 +69,24 @@ class Question(models.Model):
     var4 = RichTextUploadingField(blank=True, null=True)
     ans = RichTextUploadingField(blank=True, null=True)
     status = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return f"{self.id}-test {self.subject.name}"
 
-class Test(models.Model): 
+
+class Test(models.Model):
     status = models.BooleanField(default=True)
     student = models.ForeignKey(User, on_delete=models.CASCADE)
-    subject_category = models.ForeignKey(Subject_categories, on_delete=models.SET_NULL,null=True)
+    subject_category = models.ForeignKey(Subject_categories, on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True)
     started_time = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.subject_category.name
 
+
 class Test_files(models.Model):
-    subject = models.ForeignKey(Subject_categories, on_delete=models.CASCADE , null=True)
+    subject = models.ForeignKey(Subject_categories, on_delete=models.CASCADE, null=True)
     test_file = models.FileField(upload_to='test_files')
 
     @property
@@ -88,22 +96,25 @@ class Test_files(models.Model):
         except:
             return ''
 
+
 class Answers(models.Model):
-    attempt = models.ForeignKey(Test, on_delete=models.CASCADE , null=True , related_name='test_subject')
+    attempt = models.ForeignKey(Test, on_delete=models.CASCADE, null=True, related_name='test_subject')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True)
-    user_asnwer = models.CharField(max_length=200,null=True)
+    user_asnwer = models.CharField(max_length=200, null=True)
     correct = models.BooleanField(default=False)
 
     def __srt__(self):
         return self.test.subject_category.name
+
+
 class Comment(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE , null=True)
-    user = models.ForeignKey(User , on_delete=models.CASCADE, null=True)
-    comment = RichTextField(blank=True,null=True)
+    subject = models.ForeignKey(Subject_categories, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    comment = RichTextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username+' '+self.comment[0:10]
+        return self.user.username + ' ' + self.comment[0:10]
 
     @property
     def time(self):

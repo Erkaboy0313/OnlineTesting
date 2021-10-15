@@ -2,8 +2,7 @@ from os import name
 from django.urls import path
 from .views import createtest, adminDashboard, log_in, log_out, index, subject, \
     test, register, users, home, result, delete_user, start, score, subject_categories, comment, \
-    view_categories, add_file, update_test, url_test , userpage , allusers , changestatus
-
+    view_categories, add_file, update_test, url_test , userpage , allusers , changestatus , chat
 urlpatterns = [
     path('', index, name='index'),
     path('register/' , register, name='register'),
@@ -29,6 +28,8 @@ urlpatterns = [
     path('update_test/', update_test, name='update_test'),
     path('url_test/', url_test, name='url_test'),
     path('allusers/', allusers, name='allusers'),
+
     path('userpage/<int:id>/', userpage, name='userpage'),
     path('changestatus/', changestatus, name='changestatus'),
+    path('chat/<int:id>', chat, name= 'chat')
 ]
