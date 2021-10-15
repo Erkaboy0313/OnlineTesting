@@ -1,0 +1,22 @@
+{% extends 'app/dashboard.html' %}
+
+{% block content %}
+    <form style="overflow: scroll"  action="{% url 'url_test' %}" method="post">
+    {% csrf_token %}
+    {% for i in tests %}
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="switch{{ i.id }}" value="{{ i.id }}" checked>
+            <label class="form-check-label" for="flexSwitchCheckDefault">Savol {{ i.id }}</label>
+        </div>
+        <textarea rows="8" cols="120">
+            {{ i.q}}
+            a) {{ i.v1 }}
+            b) {{ i.v2 }}
+            c) {{ i.v3 }}
+            d) {{ i.v4 }}
+            Answear: {{ i.ans }}
+        </textarea>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Understood</button>
+    </form>
+{% endblock %}

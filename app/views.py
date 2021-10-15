@@ -68,7 +68,7 @@ def register(request):
                 Profile.objects.create(user = user)
                 return redirect(log_in)
     return render(request,'app/register.html',{})
-@login_required(login_url='login')
+@login_required(login_url='log_in')
 def start(request):
     if request.method == 'POST':
         id = request.POST.get('select')[0]
@@ -78,7 +78,7 @@ def start(request):
         'subjects': subject_category
     }
     return render(request, 'app/start.html', context)
-@login_required(login_url='login')
+@login_required(login_url='log_in')
 def home(request,id):
     subject = Subject_categories.objects.get(id=id)
     try:
@@ -178,7 +178,7 @@ def delete_user(request,id):
     user.delete()
     return redirect('users')
 
-@login_required(login_url='login')
+@login_required(login_url='log_in')
 def comment(request,id):
     url = request.META.get('HTTP_REFERER')
     print(url)
@@ -218,9 +218,9 @@ def add_file(request):
     file_url=file.fileURL
     createtest(subject.id,file_url)
     return HttpResponseRedirect(url)
-def update_test(request):
-    data = json.loads(request.body)
-    questions = Question.objects.filter(subject_id = data['subject_id'])
+
+def edit_test(request,id):
+    questions = Question.objects.filter(subject_id = id)
     tests = []
     for q in questions:
         q = {
@@ -234,9 +234,9 @@ def update_test(request):
             'status': q.status
         }
         tests.append(q)
-    return JsonResponse({'tests':tests})
+    return render(request, 'app/edittest.html', {'tests':tests})
 def url_test(request):
-    print(request.POST)
+    url = request.META.get('HTTP_REFERER')
     for i in request.POST:
         print(request.POST[i])
         if request.POST[i].isdigit():
@@ -244,7 +244,7 @@ def url_test(request):
             question = Question.objects.get(id = id)
             question.status = True
             question.save()
-    return HttpResponse({'status':'OK'})
+    return HttpResponseRedirect(url)
 
 def userpage(request,id):
     tests = Test.objects.filter(student = request.user)

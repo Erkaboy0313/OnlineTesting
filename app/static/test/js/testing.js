@@ -67,65 +67,6 @@ function start(){
     document.getElementById('questions').style.display = 'block'
     document.getElementById('answer-sheet').style.display = 'block'
 }
-function update_test(subject_id){
-    console.log(subject_id)
-    url=`/update_test/`
-    fetch(url,{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-            'X-CSRFToken':csrftoken,
-        },
-        body:JSON.stringify({
-            'subject_id':subject_id,
-        })
-        })
-        .then((response)=>{
-        response.json().then((data) => {
-            console.log(data)
-             html = ''
-            k=0
-            for (let i=0; i<data.tests.length;i++) {
-                if (data.tests[i].status){
-                    html += `
-                         <div class="form-check form-switch">
-                                  <input class="form-check-input" type="checkbox" name="switch${i+1}" value="${data.tests[i].id}" checked>
-                                  <label class="form-check-label" for="flexSwitchCheckDefault">Default switch ${i+1}</label>
-                              </div>
-                              <textarea rows="8" cols="120">
-                                  ${data.tests[i].q}
-                                  a) ${data.tests[i].v1}
-                                  b) ${data.tests[i].v2}
-                                  c) ${data.tests[i].v3}
-                                  d) ${data.tests[i].v4}
-                                  Answear: ${data.tests[i].ans}
-                              </textarea>
-                            
-                    `
-            }
-                else{
-                    html += `
-                         <div class="form-check form-switch">
-                                  <input class="form-check-input" type="checkbox" name="switch${i+1}" value="${data.tests[i].id}" >
-                                  <label class="form-check-label" for="flexSwitchCheckDefault">Default switch ${i+1}</label>
-                              </div>
-                              <textarea rows="8" cols="120">
-                                  ${data.tests[i].q}
-                                  a) ${data.tests[i].v1}
-                                  b) ${data.tests[i].v2}
-                                  c) ${data.tests[i].v3}
-                                  d) ${data.tests[i].v4}
-                                  Answear: ${data.tests[i].ans}
-                              </textarea>
-                            
-                    `
-                }
-            }
-            document.getElementById('subject_test').innerHTML = html
-        })
-    })
-}
-
 
 function practice_test(subject_id){
     console.log(subject_id)
