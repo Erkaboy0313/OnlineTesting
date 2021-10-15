@@ -41,7 +41,24 @@
       <script src="{% static "test/select/html5shiv.js" %}"></script>
       <script src="{% static "test/select/respond.min.js" %}"></script>
     <![endif]-->
-
+    <script>
+		function getCookie(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== '') {
+				const cookies = document.cookie.split(';');
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+		const csrftoken = getCookie('csrftoken');
+	</script>   
 </head>
 
 <body id="home" data-spy="scroll" data-target="#navbar-wd" data-offset="98">
@@ -75,7 +92,7 @@
                         <li><a class="nav-link" href="{% url 'log_out' %}">Log out</a></li>
                         <li><a class="nav-link" href="{% url 'userpage' request.user.id %}">{{ request.user.username }}</a></li>
                         {% else %}
-                        <li><a class="nav-link" href="{% url 'login' %}">Log in</a></li>
+                        <li><a class="nav-link" href="{% url 'log_in' %}">Log in</a></li>
                         {% endif %}
                         {% if request.user.is_staff %}
                         <li><a class="nav-link" href="{% url 'dashboard' %}">Admin</a></li>
@@ -169,7 +186,7 @@
         </div>
     </div>
 
-    <a href="#" id="scroll-to-top" class="hvr-radial-out"><i class="fa fa-angle-up"></i></a>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
     <!-- ALL JS FILES -->
     <script src="{% static 'home/js/jquery.min.js' %}"></script>

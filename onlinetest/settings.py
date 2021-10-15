@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'app',
     'ckeditor',
     'ckeditor_uploader',
+    'crispy_forms'
 ]
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_CONFIGS = {
@@ -140,7 +141,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = '/static/'
 STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')

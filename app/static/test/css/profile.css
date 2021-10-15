@@ -1,7 +1,10 @@
-.container1s {
-    height: 100vh
+.container1 {
+    min-height: 100vh;
 }
-
+.containercard{
+    margin: 0 auto;
+    width: 95%;
+}
 .card {
     width: 380px;
     border: none;

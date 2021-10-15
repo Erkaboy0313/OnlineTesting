@@ -4,9 +4,16 @@ from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
 class Profile(models.Model):
+    USER_TYPE = (
+        ('Talaba','Talaba'),
+        ('Abiturient','Abiturient'),
+        ("O'qituvchi","O'qituvchi")
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    status = models.BooleanField(default=True),
+    status = models.BooleanField(default=True)
     image = models.ImageField(upload_to = 'user_images', blank=True, null = True)
+    user_type = models.CharField(max_length=10 , choices=USER_TYPE , default='Unset')
+    city = models.CharField(max_length=20,null=True , blank=True)
 
     @property
     def imageURL(self):
@@ -14,6 +21,9 @@ class Profile(models.Model):
             return self.image.url
         except:
             return ''
+    
+    def __str__(self):
+        return self.user.username
 
 class Subject(models.Model):
     name = models.CharField(max_length=200,null=True)
