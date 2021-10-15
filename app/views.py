@@ -86,7 +86,9 @@ def home(request,id):
     except:
         test = ''
     if test:
+        print(test)
         if test.status:
+            print(test.status)
             ansvers = Answers.objects.filter(attempt = test).order_by('id')
             print(ansvers)
             return render(request , 'app/test.html' , context={'checked_questions':ansvers,'questions':'','test_id':test.id})
@@ -95,6 +97,10 @@ def home(request,id):
     else:
         test = Test.objects.create(subject_category = subject , student = request.user)
     questions = Question.objects.filter(subject=subject, status=True).order_by('?')[:10]
+    if len(questions)!=10:
+        test.delete()
+        return HttpResponse('Sorry we have no enought test to sart this test')
+    print(questions)
     for i in questions:
         Answers.objects.create(attempt = test , question = i)
     return render(request,'app/test.html',context={'checked_questions':'','questions':questions,'test_id':test.id})
@@ -167,9 +173,16 @@ def result(request):
 def score(request,id):
     test = Test.objects.get(id = id)
     answers = Answers.objects.filter(attempt = test).order_by('id')
+    comments = []
+    form = Commentform()
+    subjects = Subject_categories.objects.all()
     context={
         'id':test.subject_category.subject.id,
-        'ans':answers
+        'url_id':test.subject_category.id,
+        'ans':answers,
+        'comment': comments,
+        'form': form,
+        'subjects': subjects,
     }
     return render(request , 'app/result.html', context)
 
@@ -186,7 +199,7 @@ def comment(request,id):
         form = Commentform(request.POST)
         if form.is_valid():
             print(request.POST)
-            subject = Subject.objects.get(id=id)
+            subject = Subject_categories.objects.get(id=id)
             comment = Comment()
             comment.subject = subject
             comment.user = request.user
@@ -247,10 +260,47 @@ def url_test(request):
     return HttpResponseRedirect(url)
 
 def userpage(request,id):
-    tests = Test.objects.filter(student = request.user)
     profile = Profile.objects.get(user_id = id)
-    return render(request , 'app/userpage.html' , {'tests':tests , 'profile':profile})
+    tests = Test.objects.filter(student = profile.user)
+    if request.method == "POST":
+        form = UpdateProfile(request.POST,request.FILES)
+        if form.is_valid():
+            profile.image = request.FILES.get('image')
+            profile.city = request.POST.get('city')
+            profile.user_type = request.POST.get('user_type')
+            profile.save()
+    else:
+        form = UpdateProfile()
+    return render(request , 'app/userpage.html' , {'tests':tests , 'profile':profile , 'form':form})
 
 def allusers(request):
     profiles = Profile.objects.all()
     return render(request,'app/profile.html',context={'profiles':profiles})
+
+def changestatus(request):
+    data = json.loads(request.body)
+    profile = Profile.objects.get(user_id = data['user_id'])
+    print(profile.user.username)
+    if profile.status:
+        print('false')
+        profile.status = False
+        profile.save()
+    else:
+        print('True')
+        profile.status = True
+        profile.save()
+    return JsonResponse({"status":'ok'})
+
+def chat(request, id):
+    subjects = Subject_categories.objects.filter(id=id)
+    subject = Subject_categories.objects.get(id = id)
+    comments = Comment.objects.filter(subject= subject).order_by('-id')
+    form = Commentform()
+    context = {
+        'id':id,
+        'subjects': subjects,
+        'comment': comments,
+        'subject_id': subjects[0].subject.id,
+        'form': form
+    }
+    return render(request, 'app/chat.html', context)

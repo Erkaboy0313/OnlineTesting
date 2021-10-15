@@ -1,6 +1,28 @@
 {% extends 'app/main.html' %}
+{% load crispy_forms_tags %}
 {% load video_tags %}
 {% block content %}
+<div class="col-lg-6">
+  <div class="card">
+      <div class="modal fade" id="UpdateProfileModal" role="dialog" tabindex="-1">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"><b>Update Profile</b></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                  <form accept-charset="utf-8" method="post" enctype="multipart/form-data">
+                     {% csrf_token %}
+                     {{form|crispy}}
+                     <input type="submit" class="btn btn-success" style="float: right;">Submit
+                  </form>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
 <div class="container" style="margin-top: 90px;">
     <div class="main-body">    
           <div class="row gutters-sm">
@@ -41,20 +63,21 @@
                       <p style="display: inline-block;">Profile visibility</p>
                       <label class="switch" style="margin-left:10%; margin-top: -20px;  display: inline-block;">
                         <input type="checkbox" checked >
-                        <span class="slider round"></span>
+                        <span onclick="change({{ profile.user.id }})" class="slider round"></span>
                       </label>
                       {% else %}
-                      <label class="switch" style="margin-left: 80%; margin-top: -20px;  display: inline-block;">
+                      <p style="display: inline-block;">Profile visibility</p>
+                      <label class="switch" style="margin-left:10%; margin-top: -20px;  display: inline-block;">
                         <input type="checkbox" >
-                        <span class="slider round"></span>
+                        <span onclick="change({{ profile.user.id }})" class="slider round"></span>
                       </label>
                       {% endif %}
                     </div>
                     <div class="col-sm-12" style="margin-left: 80%;">
-                      <a class="btn btn-info " target="__blank" >Edit</a>
+                      <a class="btn btn-info " data-bs-toggle="modal" data-bs-target="#UpdateProfileModal">Edit</a>
                     </div>
-                    {% else %}
-                    {% endif %}
+                  {% else %}
+                  {% endif %}
                   </div>
                 </div>
               </div>
@@ -97,4 +120,5 @@
             </div>
         </div>
     </div>
+    
 {% endblock %}

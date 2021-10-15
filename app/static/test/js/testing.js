@@ -104,8 +104,20 @@ window.onload=function()
     }
 }
 
-
-
+function change(id){
+    console.log(id)
+    url=`/changestatus/`
+    fetch(url,{
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json',
+            'X-CSRFToken':csrftoken,
+        },
+        body:JSON.stringify({
+            'user_id':id,
+        })
+    })
+}
 
 
 // function attempt(id) {
