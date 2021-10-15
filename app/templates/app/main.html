@@ -75,7 +75,7 @@
                         <li><a class="nav-link" href="{% url 'log_out' %}">Log out</a></li>
                         <li><a class="nav-link" href="{% url 'userpage' request.user.id %}">{{ request.user.username }}</a></li>
                         {% else %}
-                        <li><a class="nav-link" href="{% url 'login' %}">Log in</a></li>
+                        <li><a class="nav-link" href="{% url 'log_in' %}">Log in</a></li>
                         {% endif %}
                         {% if request.user.is_staff %}
                         <li><a class="nav-link" href="{% url 'dashboard' %}">Admin</a></li>

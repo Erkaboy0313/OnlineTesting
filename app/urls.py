@@ -2,7 +2,7 @@ from os import name
 from django.urls import path
 from .views import createtest, adminDashboard, log_in, log_out, index, subject, \
     test, register, users, home, result, delete_user, start, score, subject_categories, comment, \
-    view_categories, add_file, update_test, url_test , userpage , allusers
+    view_categories, add_file, update_test, url_test , userpage , allusers, chat
 
 urlpatterns = [
     path('', index, name='index'),
@@ -30,4 +30,5 @@ urlpatterns = [
     path('url_test/', url_test, name='url_test'),
     path('userpage/<int:id>', userpage, name='userpage'),
     path('allusers/', allusers, name='allusers'),
+    path('chat/<int:id>', chat, name= 'chat')
 ]

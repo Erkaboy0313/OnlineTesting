@@ -167,9 +167,16 @@ def result(request):
 def score(request,id):
     test = Test.objects.get(id = id)
     answers = Answers.objects.filter(attempt = test).order_by('id')
+    comments = []
+    form = Commentform()
+    subjects = Subject_categories.objects.all()
     context={
         'id':test.subject_category.subject.id,
-        'ans':answers
+        'url_id':test.subject_category.id,
+        'ans':answers,
+        'comment': comments,
+        'form': form,
+        'subjects': subjects,
     }
     return render(request , 'app/result.html', context)
 
@@ -186,7 +193,7 @@ def comment(request,id):
         form = Commentform(request.POST)
         if form.is_valid():
             print(request.POST)
-            subject = Subject.objects.get(id=id)
+            subject = Subject_categories.objects.get(id=id)
             comment = Comment()
             comment.subject = subject
             comment.user = request.user
@@ -254,3 +261,18 @@ def userpage(request,id):
 def allusers(request):
     profiles = Profile.objects.all()
     return render(request,'app/profile.html',context={'profiles':profiles})
+
+
+def chat(request, id):
+    subjects = Subject_categories.objects.filter(id=id)
+    subject = Subject_categories.objects.get(id = id)
+    comments = Comment.objects.filter(subject= subject).order_by('-id')
+    form = Commentform()
+    context = {
+        'id':id,
+        'subjects': subjects,
+        'comment': comments,
+        'subject_id': subjects[0].subject.id,
+        'form': form
+    }
+    return render(request, 'app/chat.html', context)
