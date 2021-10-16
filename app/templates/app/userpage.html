@@ -109,6 +109,7 @@
                                             <td>{% tottal test %}</td>
                                             <td>{% score test %}</td>
                                             <td>{{ test.started_time }}</td>
+                                            <td><a href="{% url 'delete_test' test.id %}" class="btn btn-alert" style="background-color: red;"><i class="fa fa-trash"></i> Delete</a></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

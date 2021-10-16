@@ -191,6 +191,12 @@ def delete_user(request,id):
     user.delete()
     return redirect('users')
 
+def delete_test(request,id):
+    url = request.META.get('HTTP_REFERER')
+    Test.objects.get(id = id).delete()
+
+    return HttpResponseRedirect(url)
+
 @login_required(login_url='log_in')
 def comment(request,id):
     url = request.META.get('HTTP_REFERER')
@@ -234,20 +240,8 @@ def add_file(request):
 
 def edit_test(request,id):
     questions = Question.objects.filter(subject_id = id)
-    tests = []
-    for q in questions:
-        q = {
-            'id':q.id,
-            'q':q.question,
-            'v1':q.var1,
-            'v2':q.var2,
-            'v3':q.var3,
-            'v4':q.var4,
-            'ans':q.ans,
-            'status': q.status
-        }
-        tests.append(q)
-    return render(request, 'app/edittest.html', {'tests':tests})
+    return render(request, 'app/edittest.html', {'tests':questions})
+
 def url_test(request):
     url = request.META.get('HTTP_REFERER')
     for i in request.POST:

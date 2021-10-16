@@ -9,11 +9,11 @@
             <label class="form-check-label" for="flexSwitchCheckDefault">Savol {{ i.id }}</label>
         </div>
         <textarea rows="8" cols="120">
-            {{ i.q}}
-            a) {{ i.v1 }}
-            b) {{ i.v2 }}
-            c) {{ i.v3 }}
-            d) {{ i.v4 }}
+            {{ i.question|safe}}
+            a) {{ i.var1 }}
+            b) {{ i.var2 }}
+            c) {{ i.var3 }}
+            d) {{ i.var4 }}
             Answear: {{ i.ans }}
         </textarea>
     {% endfor %}

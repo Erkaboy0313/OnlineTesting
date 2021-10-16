@@ -105,7 +105,7 @@
                         <p>Number of qustions: {{ subject.question_set.all.count }}</p>
                     </div>
                     <div>
-                        <button class="btn btn-outline-danger" type="button"><a href="{% url 'update_test' subject.id %}">Update test</a></button>
+                        <button class="btn btn-outline-danger" type="button"><a href="{% url 'edit_test' subject.id %}">Update test</a></button>
 {#                        <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#btnUpdate" onclick="update_test({{ subject.id }})">Update test</button>#}
                         <button class="btn btn-outline-success"><i class="fa fa-plus"></i> Add test</button>
                     </div>

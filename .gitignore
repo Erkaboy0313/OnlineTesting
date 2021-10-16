@@ -13,5 +13,5 @@ media/
 .well-known/
 settings.json
 venv
-db.sqlite3
 migrations/
+db.sqlite3
