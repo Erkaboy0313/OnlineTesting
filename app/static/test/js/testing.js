@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     startbtn.addEventListener('click', countDown)
 });
 function start(){
-    document.getElementById('questions').style.display = 'block'
     document.getElementById('answer-sheet').style.display = 'block'
 }
 
@@ -118,6 +117,25 @@ function change(id){
         })
     })
 }
+function start_test(id1,id2){
+    url=`/startattempt/`
+    fetch(url,{
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json',
+            'X-CSRFToken':csrftoken,
+        },
+        body:JSON.stringify({
+            'id1':id1,
+            'id2':id2
+        })
+    }).then((response)=>{
+        response.json().then((data) => {
+            window.location.replace(`/test/${id1}`);
+        })
+    }) 
+}
+
 
 
 // function attempt(id) {

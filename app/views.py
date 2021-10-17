@@ -1,6 +1,6 @@
 import json
 from django.shortcuts import render,redirect
-from .models import Subject, Question, Test, Answers, Subject_categories, Comment , Profile
+from .models import Subject, Question, Test, Answers, Subject_categories, Comment , Profile , Attempt
 import os
 from django.core.files.storage import default_storage
 from django.contrib.auth import authenticate, login,logout
@@ -72,38 +72,110 @@ def register(request):
 def start(request):
     if request.method == 'POST':
         id = request.POST.get('select')[0]
-        return redirect(f'/test/{id}')
+        id2 = request.POST.get('select1')[0]
+        context={
+            'subject1':id,
+            'subject2':id2
+        }
+        return render(request , 'app/test.html' , context)
     subject_category = Subject_categories.objects.all()
     context = {
         'subjects': subject_category
     }
     return render(request, 'app/start.html', context)
+
 @login_required(login_url='log_in')
-def home(request,id):
+def start_single_test(request,id):
     subject = Subject_categories.objects.get(id=id)
-    try:
-        test = Test.objects.filter(subject_category=subject , student = request.user).order_by('-id')[0]
-    except:
-        test = ''
+    test = Test.objects.filter(subject_category=subject , block__student = request.user).order_by('-id')[0]
     if test:
-        print(test)
-        if test.status:
-            print(test.status)
-            ansvers = Answers.objects.filter(attempt = test).order_by('id')
-            print(ansvers)
-            return render(request , 'app/test.html' , context={'checked_questions':ansvers,'questions':'','test_id':test.id})
+        if test.block.status:
+            answers = Answers.objects.filter(attempt = test).order_by('id')
+            if len(answers)!=0:
+                context={
+                    'checked_questions':answers,
+                    'questions':'',
+                    'test_id':test.id,
+                    'next':'',
+                    'prev':''
+                    }
+                is_next = Test.objects.filter(block_id = test.block.id).order_by('id')
+                if len(is_next)>1:
+                    if is_next[0].subject_category.id == id:
+                        context['next'] = Test.objects.filter(block_id = test.block.id).order_by('id')[1].subject_category.id
+                        context['prev'] = ''
+                    else:
+                        context['next'] = ''
+                        context['prev'] = Test.objects.filter(block_id = test.block.id).order_by('id')[0].subject_category.id
+                return render(request,'app/onlinetest.html',context)
+            else:
+                questions = Question.objects.filter(subject=subject, status=True).order_by('?')[:10]
+                if len(questions)!=10:
+                    test.delete()
+                    return HttpResponse('Sorry we have no enought test to sart this test')
+                for i in questions:
+                    Answers.objects.create(attempt = test , question = i)
+                
+                context={
+                    'checked_questions':'',
+                    'questions':questions,
+                    'test_id':test.id,
+                    'next':'',
+                    'prev':''
+                    }
+
+                is_next = Test.objects.filter(block_id = test.block.id).order_by('id')
+                if len(is_next)>1:
+                    if is_next[0].subject_category.id == id:
+                        context['next'] = Test.objects.filter(block_id = test.block.id).order_by('id')[1].subject_category.id
+                        context['prev'] = ''
+                        print(context)
+                    else:
+                        context['next'] = ''
+                        context['prev'] = Test.objects.filter(block_id = test.block.id).order_by('id')[0].subject_category.id
+                        print(context)
+                return render(request,'app/onlinetest.html',context)    
         else:
-            test = Test.objects.create(subject_category = subject , student = request.user)
+            attempt = Attempt.objects.create(student = request.user)
+            test = Test.objects.create(block = attempt, subject_category_id = id)
+            questions = Question.objects.filter(subject=subject, status=True).order_by('?')[:10]
+            if len(questions)!=10:
+                attempt.delete()
+                return HttpResponse('Sorry we have no enought test to sart this test')
+            for i in questions:
+                Answers.objects.create(attempt = test , question = i)    
+            context={
+                'checked_questions':'',
+                'questions':questions,
+                'test_id':test.id,
+            }
+            return render(request, 'app/onlinetest.html', context)
+
     else:
-        test = Test.objects.create(subject_category = subject , student = request.user)
-    questions = Question.objects.filter(subject=subject, status=True).order_by('?')[:10]
-    if len(questions)!=10:
-        test.delete()
-        return HttpResponse('Sorry we have no enought test to sart this test')
-    print(questions)
-    for i in questions:
-        Answers.objects.create(attempt = test , question = i)
-    return render(request,'app/test.html',context={'checked_questions':'','questions':questions,'test_id':test.id})
+        attempt = Attempt.objects.create(student = request.user)
+        test = Test.objects.create(block = attempt, subject_category_id = id)
+        questions = Question.objects.filter(subject=subject, status=True).order_by('?')[:10]
+        if len(questions)!=10:
+            attempt.delete()
+            return HttpResponse('Sorry we have no enought test to sart this test')
+        for i in questions:
+            Answers.objects.create(attempt = test , question = i)    
+        context={
+            'checked_questions':'',
+            'questions':questions,
+            'test_id':test.id,
+        }
+        return render(request, 'app/onlinetest.html', context)
+
+@login_required(login_url='log_in')
+def start_multiple_test(request):
+    data = json.loads(request.body)
+    id1 = data['id1']
+    attempt = Attempt.objects.create(student = request.user)
+    Test.objects.create(block = attempt, subject_category_id = data['id1'])
+    Test.objects.create(block = attempt, subject_category_id = data['id2'])
+    return JsonResponse({'status':'ok'})
+
 def adminDashboard(request):
     if request.user.is_staff:
         return render(request, 'app/dashboard.html')
@@ -136,7 +208,7 @@ def subject_categories(request,id):
             name = request.POST.get('name')
             image = request.FILES.get('image')
             description = request.POST.get('description')
-            add_test = Subject_categories.objects.create(subject=subject,name=name,image=image,description=description)
+            Subject_categories.objects.create(subject=subject,name=name,image=image,description=description)
             return HttpResponseRedirect(url)
         else:
             return HttpResponse("Error")
@@ -165,25 +237,40 @@ def users(request):
 def result(request):
     data = json.loads(request.body)
     print(data['test_id'])
-    test = Test.objects.get(id = data['test_id'])
-    test.status = False
-    test.save()
+    test = Test.objects.get(id = data['test_id']).block.id
+    attempt = Attempt.objects.get(id = test)
+    attempt.status = False
+    attempt.save()
     return JsonResponse({'status':'ok'})
 
 def score(request,id):
-    test = Test.objects.get(id = id)
-    answers = Answers.objects.filter(attempt = test).order_by('id')
+    test = Test.objects.get(id = id).block.id
+    at = Attempt.objects.get(id = test)
+    tests = Test.objects.filter(block = at)
     comments = []
     form = Commentform()
-    subjects = Subject_categories.objects.all()
-    context={
-        'id':test.subject_category.subject.id,
-        'url_id':test.subject_category.id,
-        'ans':answers,
-        'comment': comments,
-        'form': form,
-        'subjects': subjects,
-    }
+    if len(tests)>1:
+        answers = Answers.objects.filter(attempt = tests[0]).order_by('id')
+        answers1 = Answers.objects.filter(attempt = tests[1]).order_by('id')
+        context={
+            'id':tests[0].subject_category.subject.id,
+            'url_id':tests[0].subject_category.id,
+            'ans':answers,
+            'ans2':answers1,
+            'comment': comments,
+            'form': form,
+            'subjects': tests,
+        }
+    else:
+        answers = Answers.objects.filter(attempt = tests[0]).order_by('id')
+        context={
+            'id':tests[0].subject_category.subject.id,
+            'url_id':tests[0].subject_category.id,
+            'ans':answers,
+            'comment': comments,
+            'form': form,
+            'subjects': tests,
+        }
     return render(request , 'app/result.html', context)
 
 def delete_user(request,id):
@@ -255,7 +342,7 @@ def url_test(request):
 
 def userpage(request,id):
     profile = Profile.objects.get(user_id = id)
-    tests = Test.objects.filter(student = profile.user)
+    tests = Test.objects.filter(block__student = profile.user)
     if request.method == "POST":
         form = UpdateProfile(request.POST,request.FILES)
         if form.is_valid():

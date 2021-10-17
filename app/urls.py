@@ -1,8 +1,8 @@
 from os import name
 from django.urls import path
 from .views import createtest, adminDashboard, log_in, log_out, index, subject, \
-    test, register, users, home, result, delete_user, start, score, subject_categories, comment, \
-    view_categories, add_file, url_test, userpage, allusers, changestatus, chat, edit_test , delete_test
+    test, register, users, start_single_test, result, delete_user, start, score, subject_categories, comment, \
+    view_categories, add_file, url_test, userpage, allusers, changestatus, chat, edit_test , delete_test , start_multiple_test
 
 urlpatterns = [
     path('', index, name='index'),
@@ -20,7 +20,8 @@ urlpatterns = [
 
     path('check/',test,name='check'),
 
-    path('test/<int:id>/',home,name='test'),
+    path('test/<int:id>/',start_single_test,name='test'),
+    path('startattempt/',start_multiple_test,name='multipletest'),
     path('result/',result,name='result'),
     path('scores/<int:id>/',score,name='score'),
     path('start/',start,name='start'),

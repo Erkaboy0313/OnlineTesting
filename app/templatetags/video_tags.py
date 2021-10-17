@@ -14,14 +14,14 @@ def tottal(object):
 
 @register.simple_tag
 def all(object):
-    return Test.objects.filter(student = object.user).count()
+    return Test.objects.filter(block__student = object.user).count()
 
 @register.simple_tag
 def rank(object):
-    count = Answers.objects.filter(attempt__student = object.user).count()
-    true = Answers.objects.filter(attempt__student = object.user , correct = True).count()
+    count = Answers.objects.filter(attempt__block__student = object.user).count()
+    true = Answers.objects.filter(attempt__block__student = object.user , correct = True).count()
     if true and count:
         print(true/count*100)
-        return (true/count)*100
+        return round(((true/count)*100),1)
     else:
         return 0

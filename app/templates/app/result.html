@@ -30,6 +30,9 @@
 </head>
 <body oncontextmenu='return false' class='snippet-body'>
 <div class="container mt-sm-5 my-1">
+    {% for i in subjects %}
+    {% if forloop.counter == 1 %}
+    {{ i.subject_category.name }}
     <div class="question ml-sm-5 pl-sm-5 pt-2">
         {% for i in ans %}
             <p><b>{{ forloop.counter }}. {{ i.question.question }}</b></p>
@@ -40,6 +43,20 @@
             {% endif %}
         {% endfor %}
     </div>
+    {% else %}
+    {{ i.subject_category.name }}
+    <div class="question ml-sm-5 pl-sm-5 pt-2">
+        {% for i in ans2 %}
+            <p><b>{{ forloop.counter }}. {{ i.question.question }}</b></p>
+            {% if i.correct %}
+                <p style="background-color: #4fff0b">{{ i.user_asnwer }}</p>
+            {% else %}
+                <p style="background-color: rgba(255,17,35,0.85)">{{ i.user_asnwer }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
     <a href="{% url 'chat' url_id %}">Comment</a>
     <div class="d-flex align-items-center pt-3">
         <div class="ml-auto mr-sm-5">
