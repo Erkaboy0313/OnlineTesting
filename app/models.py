@@ -78,8 +78,9 @@ class Attempt(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     started_time = models.DateTimeField(auto_now_add=True)
 
+
 class Test(models.Model):
-    block = models.ForeignKey(Attempt , on_delete=models.CASCADE , null=True)
+    block = models.ForeignKey(Attempt, on_delete=models.CASCADE)
     subject_category = models.ForeignKey(Subject_categories, on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True)
     
