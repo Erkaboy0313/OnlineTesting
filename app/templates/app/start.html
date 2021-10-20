@@ -19,8 +19,22 @@
         {% endfor %}
             </select>
         </div>
-        <button id="btnSubmit" type="submit" style="background-color: #2e7d32; margin-left: 550px; margin-bottom: 100px" disabled>
+        <button type="button" id="btnSubmit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#StartTest" style="background-color: #2e7d32; margin-left: 550px; margin-bottom: 100px" disabled>
             <a><b>Testni boshlash</b></a>
         </button>
+        <!-- Modal -->
+        <div class="modal fade" id="StartTest" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <p>Testni boshlamoqchimisiz?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-success" >Start</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </form>
 {% endblock %}

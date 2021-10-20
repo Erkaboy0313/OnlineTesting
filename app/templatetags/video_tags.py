@@ -1,16 +1,30 @@
 from django import template
-from app.models import Answers , Test
+from app.models import Answers , Test, Attempt
 register = template.Library()
 
 @register.simple_tag
 def score(object):
-    answers = Answers.objects.filter(attempt = object, correct = True).count()
-    return answers
+    test = Test.objects.filter(block=object)
+    true = ''
+    for ob in test:
+        true += str(Answers.objects.filter(attempt = ob, correct=True).count())+'/'
+    return true[:-1]
+
+@register.simple_tag
+def subjects(object):
+    test = Test.objects.filter(block=object)
+    subject = ''
+    for i in test:
+        subject += i.subject_category.name+'/'
+    return subject[:-1]
 
 @register.simple_tag
 def tottal(object):
-    true = Answers.objects.filter(attempt = object).count()
-    return true
+    test = Test.objects.filter(block=object)
+    true = ''
+    for ob in test:
+        true += str(Answers.objects.filter(attempt = ob).count())+'/'
+    return true[:-1]
 
 @register.simple_tag
 def all(object):
@@ -25,3 +39,4 @@ def rank(object):
         return round(((true/count)*100),1)
     else:
         return 0
+

@@ -99,18 +99,24 @@
                                             <th>Tottal questions</th>
                                             <th>Score</th>
                                             <th>Date</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for test in tests %}
+                                        {% for attemp in attemps %}
                                         <tr>
                                             <th>{{ forloop.counter }}</th>
-                                            <th scope="row"><a href="{% url 'score' test.id %}">{{ test.subject_category.name }}</a></th>
-                                            <td>{% tottal test %}</td>
-                                            <td>{% score test %}</td>
-                                            <td>{{ test.block.started_time }}</td>
-                                            <td><a href="{% url 'delete_test' test.id %}" class="btn btn-alert" style="background-color: red;"><i class="fa fa-trash"></i> Delete</a></td>
-                                        </tr>
+                                            <th scope="row">
+                                                <a>{% subjects attemp %}</a><br>
+                                            </th>
+                                            <th>{% tottal attemp %}</th>
+                                            <th>{% score attemp %}</th>
+                                            <th>{{ attemp.started_time }}</th>
+                                            <td>
+
+                                            <a class="btn btn-alert" style="background-color: red" href="{% url 'delete_attempt' attemp.id %}" ><i class="fa fa-trash"></i>Delate</a><br>
+                                            </td>
+                                           </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>

@@ -68,16 +68,20 @@ def register(request):
                 Profile.objects.create(user = user)
                 return redirect(log_in)
     return render(request,'app/register.html',{})
+
+def start_multiple_test(request,id1,id2):
+    attempt = Attempt.objects.create(student = request.user)
+    Test.objects.create(block = attempt, subject_category_id = id1)
+    Test.objects.create(block = attempt, subject_category_id = id2)
+
 @login_required(login_url='log_in')
 def start(request):
     if request.method == 'POST':
+        print(request.POST)
         id = request.POST.get('select')[0]
         id2 = request.POST.get('select1')[0]
-        context={
-            'subject1':id,
-            'subject2':id2
-        }
-        return render(request , 'app/test.html' , context)
+        start_multiple_test(request,id,id2)
+        return redirect(f'/test/{id}/')
     subject_category = Subject_categories.objects.all()
     context = {
         'subjects': subject_category
@@ -107,7 +111,9 @@ def start_single_test(request,id):
                     else:
                         context['next'] = ''
                         context['prev'] = Test.objects.filter(block_id = test.block.id).order_by('id')[0].subject_category.id
-                return render(request,'app/onlinetest.html',context)
+                print(context)
+                return render(request,'app/test.html',context)
+
             else:
                 questions = Question.objects.filter(subject=subject, status=True).order_by('?')[:10]
                 if len(questions)!=10:
@@ -115,7 +121,7 @@ def start_single_test(request,id):
                     return HttpResponse('Sorry we have no enought test to sart this test')
                 for i in questions:
                     Answers.objects.create(attempt = test , question = i)
-                
+                print('Yangi test')
                 context={
                     'checked_questions':'',
                     'questions':questions,
@@ -129,12 +135,13 @@ def start_single_test(request,id):
                     if is_next[0].subject_category.id == id:
                         context['next'] = Test.objects.filter(block_id = test.block.id).order_by('id')[1].subject_category.id
                         context['prev'] = ''
-                        print(context)
+                        print('Yangi test yaratib berildi Next')
                     else:
                         context['next'] = ''
                         context['prev'] = Test.objects.filter(block_id = test.block.id).order_by('id')[0].subject_category.id
                         print(context)
-                return render(request,'app/onlinetest.html',context)    
+                print('Yangi test chiqarildi')
+                return render(request,'app/test.html',context)
         else:
             attempt = Attempt.objects.create(student = request.user)
             test = Test.objects.create(block = attempt, subject_category_id = id)
@@ -149,7 +156,8 @@ def start_single_test(request,id):
                 'questions':questions,
                 'test_id':test.id,
             }
-            return render(request, 'app/onlinetest.html', context)
+            print(context)
+            return render(request, 'app/test.html', context)
 
     else:
         attempt = Attempt.objects.create(student = request.user)
@@ -165,16 +173,8 @@ def start_single_test(request,id):
             'questions':questions,
             'test_id':test.id,
         }
-        return render(request, 'app/onlinetest.html', context)
-
-@login_required(login_url='log_in')
-def start_multiple_test(request):
-    data = json.loads(request.body)
-    id1 = data['id1']
-    attempt = Attempt.objects.create(student = request.user)
-    Test.objects.create(block = attempt, subject_category_id = data['id1'])
-    Test.objects.create(block = attempt, subject_category_id = data['id2'])
-    return JsonResponse({'status':'ok'})
+        print(context)
+        return render(request, 'app/test.html', context)
 
 def adminDashboard(request):
     if request.user.is_staff:
@@ -281,7 +281,11 @@ def delete_user(request,id):
 def delete_test(request,id):
     url = request.META.get('HTTP_REFERER')
     Test.objects.get(id = id).delete()
+    return HttpResponseRedirect(url)
 
+def delete_attempt(request,id):
+    url = request.META.get('HTTP_REFERER')
+    Attempt.objects.get(id=id).delete()
     return HttpResponseRedirect(url)
 
 @login_required(login_url='log_in')
@@ -342,7 +346,18 @@ def url_test(request):
 
 def userpage(request,id):
     profile = Profile.objects.get(user_id = id)
-    tests = Test.objects.filter(block__student = profile.user)
+    attemp  = Attempt.objects.filter(student = profile.user)
+    # attemps = []
+    # for a in attemp:
+    #     res = []
+    #     test = Test.objects.filter(block=a)
+    #     for i in test:
+    #         res.append(i)
+    #     d = {
+    #         'id':a.id,
+    #         'attemp_t':res
+    #     }
+    #     attemps.append(d)
     if request.method == "POST":
         form = UpdateProfile(request.POST,request.FILES)
         if form.is_valid():
@@ -352,7 +367,7 @@ def userpage(request,id):
             profile.save()
     else:
         form = UpdateProfile()
-    return render(request , 'app/userpage.html' , {'tests':tests , 'profile':profile , 'form':form})
+    return render(request , 'app/userpage.html' , {'attemps':attemp , 'profile':profile , 'form':form})
 
 def allusers(request):
     profiles = Profile.objects.all()
