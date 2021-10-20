@@ -3,7 +3,7 @@
 {% load static %}
     <form method="post">
     {% csrf_token %}
-        <div class="col-12 col-md-9" style="margin-bottom: 80px; margin-top: 100px">
+        <div class="col-12 col-md-9" style="margin-bottom: 20px; margin-top: 100px">
             <select name="select" id="select" class="form-control">
                 <option value="" disabled selected hidden>Fan nomi tanlang</option>
         {% for subject in subjects %}
@@ -11,7 +11,7 @@
         {% endfor %}
             </select>
         </div>
-        <div class="col-12 col-md-9" style="margin-bottom: 80px; margin-top: 100px">
+        <div class="col-12 col-md-9" style="margin-bottom: 80px; margin-top: 20px">
             <select name="select1" id="select" class="form-control">
                 <option value="" disabled selected hidden>Fan nomi tanlang</option>
         {% for subject in subjects %}
@@ -19,6 +19,32 @@
         {% endfor %}
             </select>
         </div>
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('MyApp', [])
+        app.controller('MyController', function ($scope) {
+            //This will disable the Button by default.
+            $scope.IsDisabled = true;
+            $scope.EnableDisable = function () {
+                //If Button is disabled it will be enabled and vice versa.
+                $scope.IsDisabled = !$scope.HasPassport;
+            }
+        });
+    </script>
+    <div ng-app="MyApp" ng-controller="MyController">
+        <label for="chkPassport">
+            <input type="checkbox" id="chkPassport" ng-model="HasPassport" ng-change="EnableDisable()" />
+            Majburiy fanlar
+        </label>
+        <hr />
+        <div>
+            <input type="button" id="btnValidate" value = "Matematika" ng-disabled="IsDisabled"/>
+            <input type="button" id="btnValidate" value = "Tarix" ng-disabled="IsDisabled"/>
+            <input type="button" id="btnValidate" value = "Ona tili" ng-disabled="IsDisabled"/>
+        </div>
+    </div>
+
         <button type="button" id="btnSubmit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#StartTest" style="background-color: #2e7d32; margin-left: 550px; margin-bottom: 100px" disabled>
             <a><b>Testni boshlash</b></a>
         </button>
