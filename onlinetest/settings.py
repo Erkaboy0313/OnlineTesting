@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-y04-lo2h8@-@3uq(p&b+km=&598%_c#fm94l)3x^db^m0wpo@j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['testingwebservice.herokuapp.com','127.0.0.1']
-
+ALLOWED_HOSTS = ['testingwebservice.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -49,18 +48,19 @@ CKEDITOR_CONFIGS = {
         'height': 100,
         'toolbar_BalloonEditor': [
             ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter',
+             'JustifyRight', 'JustifyBlock'],
             ['Link', 'Unlink'],
             ['RemoveFormat', 'Source']
 
         ]
     },
-    'math':{
-        'toolbar':'Custom',
-        'toolbar_Custom':[
-            ['Bold','Link','Image','CodeSnippet','Youtube'],
+    'math': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Link', 'Image', 'CodeSnippet', 'Youtube'],
         ],
-        'extraPlugins':','.join(['codesnippet','youtube'])
+        'extraPlugins': ','.join(['codesnippet', 'youtube'])
     }
 }
 MIDDLEWARE = [
@@ -94,7 +94,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'onlinetest.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -104,7 +103,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -124,7 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -138,21 +135,19 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = '/static/'
-STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
