@@ -3,6 +3,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
+class Visitors(models.Model):
+    visitor = models.CharField(max_length=20,null=True)
+    visited = models.PositiveIntegerField(default=0)
+    data = models.DateTimeField(auto_now_add=True)
+    @property
+    def addvisitor(self):
+        self.visited += 1
+        self.save()
 
 class Profile(models.Model):
     USER_TYPE = (

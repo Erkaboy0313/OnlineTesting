@@ -1,6 +1,6 @@
 import json
 from django.shortcuts import render, redirect
-from .models import Subject, Question, Test, Answers, Subject_categories, Comment, Profile, Attempt
+from .models import Subject, Question, Test, Answers, Subject_categories, Comment, Profile, Attempt, Visitors
 import os
 from django.core.files.storage import default_storage
 from django.contrib.auth import authenticate, login, logout
@@ -8,7 +8,8 @@ from .forms import *
 from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 import docx2txt
-
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
 
 def createtest(id, file):
     url = file.split('/')
@@ -29,6 +30,13 @@ def createtest(id, file):
 
 def index(request):
     subjects = Subject.objects.all()
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    # visit = Visitors.objects.create(visitor = ip)
+    # visit.addvisitor
     context = {
         'subjects': subjects
     }
@@ -73,7 +81,7 @@ def register(request):
             if user:
                 Profile.objects.create(user=user)
                 return redirect(log_in)
-    return render(request, 'app/register.html', {})
+    return render(request, 'app/signup.html', {})
 
 
 def start_multiple_test(request, id1, id2, status=False):
@@ -211,7 +219,21 @@ def start_single_test(request, id):
 
 def adminDashboard(request):
     if request.user.is_staff:
-        return render(request, 'app/dashboard.html')
+        tottal = Attempt.objects.annotate(month = TruncMonth('started_time')).values('month').annotate(c=Count('id'))
+        scores = []
+        months = []
+        for i in tottal:
+            scores.append(str(i['c']))
+            months.append(i['month'].strftime('%B'))
+        # scores.append('8')
+        # months.append('November')
+        context = {
+            'scores':scores,
+            'months':months
+        }
+        print(context['scores'])
+        print(context['months'])
+        return render(request, 'app/dashboard.html' , context)
     else:
         return redirect('index')
 

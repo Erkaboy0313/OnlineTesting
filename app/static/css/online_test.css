@@ -1,0 +1,82 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+/* -----------navbar start---------------- */
+.navbar1 div {
+    display: inline-block;
+}
+
+.navbar1 {
+    z-index: 100;
+    position: sticky;
+    top: 0;
+    font-size: 17px;
+    font-weight: bold;
+    width: 100%;
+    padding: 0px 50px;
+    color: black;
+    background-color: white;
+}
+
+.navbar1 .main_logo {
+    cursor: pointer;
+    width: 230px;
+    height: 80px;
+    margin-right: 43px;
+}
+
+.navbar1 ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar1 ul li {
+    color: black;
+    float: left;
+    padding: 25px 15px;
+}
+
+.navbar1 ul li:hover{
+    cursor: pointer;
+    color: chocolate;
+}
+
+.activ{
+    color: chocolate !important;
+}
+/* --------------navbar end----------------- */
+
+/* ---------------select science start-------- */
+.select_science {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+/* ---------------select science end-------- */
+
+/* ---------------footer start------------ */
+.footer {
+    width: 100%;
+    height: 300px;
+    padding: 50px;
+    background-color: #0B1C2C;
+    color: white;
+}
+
+.footer div {
+    height: 100%;
+}
+
+.quick_links h3{
+    text-align: center;
+    border-bottom: 4px solid aqua;
+}
+
+.contact_us i{
+    color: white;
+}
+/* ---------------footer end------------ */

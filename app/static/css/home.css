@@ -1,0 +1,143 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+/* ----------------navbar start-------------------- */
+.navbar1 div {
+    display: inline-block;
+}
+
+.navbar1 {
+    z-index: 100;
+    position: sticky;
+    top: 0;
+    font-size: 17px;
+    font-weight: bold;
+    width: 100%;
+    padding: 0px 50px;
+    color: black;
+    background-color: white;
+}
+
+.navbar1 .main_logo {
+    cursor: pointer;
+    width: 230px;
+    height: 80px;
+    margin-right: 43px;
+}
+
+.navbar1 ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar1 ul li {
+    color: black;
+    float: left;
+    padding: 25px 15px;
+}
+
+.navbar1 ul li:hover{
+    cursor: pointer;
+    color: chocolate;
+}
+
+.activ{
+    color: chocolate !important;
+}
+
+/* --------------navbar end----------------- */
+
+/* --------------slider start--------------- */
+.top_slider{
+    height: 550px;
+}
+/* ---------------slider end----------------- */
+
+/* ---------------tabbar start--------------- */
+.tabbar_menu {
+    width: 70%;
+    box-shadow: 1px 1px 20px 1px black;
+    border-radius: 10px;
+    background-color: white;
+    margin-top: -60px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+.tabbar_menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.tabbar_menu ul li {
+    display: inline-block;
+    padding: 30px 10px;
+    text-align: center;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+ .tabbar_menu ul li:hover  {
+    color: chocolate;
+    cursor: pointer;
+}
+
+.tabbar_menu ul li i {
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* ---------------tabbar end----------------- */
+
+/* ---------------content start--------------*/
+.content {
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.left_content {
+    padding: 20px 50px 20px 0px;
+}
+
+.left_content h1 {
+    font-weight: bold;
+    width: 437px;
+    border-bottom: 5px  solid #002147;
+}
+
+.left_content h1 span {
+    color: #002147;
+}
+/* ---------------content end--------------*/
+/* ---------------footer start------------ */
+.footer {
+    width: 100%;
+    height: 300px;
+    padding: 50px;
+    background-color: #0B1C2C;
+    color: white;
+}
+
+.footer div {
+    height: 100%;
+}
+
+.quick_links h3{
+    text-align: center;
+    border-bottom: 4px solid aqua;
+}
+
+.contact_us i{
+    color: white;
+}
+
+/* ---------------footer end------------ */

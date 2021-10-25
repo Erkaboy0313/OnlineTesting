@@ -4,7 +4,9 @@ var chart3 = document.getElementById("piechart");
 var chart4 = document.getElementById("doughnutchart");
 var chart5 = document.getElementById("stackedbarchart");
 var chart6 = document.getElementById("radarchart");
-
+console.log(month)
+console.log(scores)
+console.log('hello world')
 // new
 var myChart1 = new Chart(chart1, {
 type: 'line',

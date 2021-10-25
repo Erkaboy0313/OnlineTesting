@@ -1,5 +1,9 @@
 var trafficchart = document.getElementById("trafficflow");
 var saleschart = document.getElementById("sales");
+var datas = month.split(['&#x27;']).join(',').split('[').join(',').split(']').join(',').split(',')
+var score = scores.split(['&#x27;']).join(',').split('[').join(',').split(']').join(',').split(',')
+const label = datas.filter(word => word.trim().length > 0);
+const date = score.filter(word => word.trim().length > 0);
 
 // new
 var myChart1 = new Chart(trafficchart, {
@@ -37,10 +41,10 @@ options: {
 var myChart2 = new Chart(saleschart, {
 type: 'bar',
 data: {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    labels: label,
     datasets: [{
             label: 'Income',
-            data: ["280", "300", "400", "600", "450", "400", "500", "550", "450", "650", "950", "1000"],
+            data: date,
             backgroundColor: "rgba(76, 175, 80, 0.5)",
             borderColor: "#6da252",
             borderWidth: 1,

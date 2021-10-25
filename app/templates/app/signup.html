@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Sign up | Bootstrap Simple Admin Template</title>
+    <title>Sign up</title>
     <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'assets/css/auth.css' %}" rel="stylesheet">
 </head>
@@ -16,28 +16,27 @@
         <div class="auth-content">
             <div class="card">
                 <div class="card-body text-center">
-                    <div class="mb-4">
-                        <img class="brand" src="assets/img/bootstraper-logo.png" alt="bootstraper logo">
-                    </div>
                     <h6 class="mb-4 text-muted">Create new account</h6>
-                    <form action="" method="">
-                        <div class="mb-3 text-start">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" placeholder="Enter Name" required>
-                        </div>
+                    <form action="" method="post">
+                        {% csrf_token %}    
                         <div class="mb-3 text-start">
                             <label for="email" class="form-label">Email adress</label>
-                            <input type="email" class="form-control" placeholder="Enter Email" required>
+                            <input type="email" class="form-control" placeholder="Enter Email" name="email" required>
+                        </div>
+                        <div class="mb-3 text-start">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Name" name='username' required>
                         </div>
                         <div class="mb-3 text-start">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" placeholder="Password" required>
+                            <input type="password" class="form-control" placeholder="Password" name='password1' required>
                         </div>
-                        <!-- 
+                        
                         <div class="mb-3">
-                            <input type="password" class="form-control" placeholder="Confirm password" required>
+                            <label for="password" class="form-label" style="float: left;">Password confim</label>
+                            <input type="password" class="form-control" placeholder="Confirm password" name="password2" required>
                         </div> 
-                        -->
+                       
                         <div class="mb-3 text-start">
                             <div class="form-check">
                               <input class="form-check-input" name="confirm" type="checkbox" value="" id="check1">
@@ -48,7 +47,7 @@
                         </div>
                         <button class="btn btn-primary shadow-2 mb-4">Register</button>
                     </form>
-                    <p class="mb-0 text-muted">Allready have an account? <a href="login.html">Log in</a></p>
+                    <p class="mb-0 text-muted">Allready have an account? <a href="{% url 'log_in' %}">Log in</a></p>
                 </div>
             </div>
         </div>

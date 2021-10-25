@@ -28,7 +28,7 @@ def tottal(object):
 
 @register.simple_tag
 def all(object):
-    return Test.objects.filter(block__student = object.user).count()
+    return Attempt.objects.filter(student = object.user).count()
 
 @register.simple_tag
 def rank(object):
