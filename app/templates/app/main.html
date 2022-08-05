@@ -50,40 +50,33 @@
 	</script>   
 </head>
 
-<body id="home" data-spy="scroll" data-target="#navbar-wd" data-offset="98">
-
-    <!-- LOADER -->
-    <!-- <div id="preloader">
-        <div class="loader">
-            <img src="{% static 'home/images/loader.gif' %}" alt="#" />
+    <nav class="navbar navbar1 navbar-expand-lg navbar-light bg-white">
+      <div class="container-fluid container">
+        <a class="navbar-brand main_logo " href="#"><img style="padding-top: 10px;" width="200px" height="60px" src="{% static 'images/online_test_logo.jpg' %}" alt=""></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link activ menu1" aria-current="page"href="{% url 'index' %}"><i class="fas fa-home"></i> HOME</a>
+            <a class="nav-link menu1" href="{% url 'start' %}"><i class="fas fa-spell-check"></i> ONLINE TEST</a>
+            <a class="nav-link menu1" href="{% url 'allusers' %}"><i class="fas fa-users"></i> USERS</a>
+            {% if request.user.is_authenticated %}
+            <a class="nav-link menu1" href="{% url 'log_out' %}"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
+            <a class="nav-link menu1" href="{% url 'userpage' request.user.id %}"><i class="fas fa-user"></i> {{ request.user.username }}</a>
+            {% else %}
+            <a class="nav-link menu1" href="{% url 'log_in' %}"><i class="fas fa-sign-in-alt"></i> LOG IN</a>
+            <a class="nav-link menu1" href="{% url 'register' %}"><i class="fas fa-sign-in-alt"></i> SIGN UP</a>
+            {% endif %}
+            {% if request.user.is_staff %}
+                <a class="nav-link menu1" href="{% url 'dashboard' %}"><i class="fas fa-user-cog"></i> ADMIN</a>
+            {% endif %}
+          </div>
         </div>
-    </div> -->
-    <!-- end loader -->
-    <!-- END LOADER -->
-    <div class="container">
-        <!-- navbar start -->
-        <div class="navbar1">
-            <div class="navbar_menu">
-                <ul>
-                    <li class="main_logo"><img width="100%" height="100%" src="{% static 'images/online_test_logo.jpg' %}" alt=""></li>
-                    <a href="{% url 'index' %}"><li class="activ"><i class="fas fa-home"></i> HOME</li></a>
-                    <a href="{% url 'start' %}"><li><i class="fas fa-spell-check"></i> ONLINE TEST</li></a>
-                    <a href="{% url 'allusers' %}"><li><i class="fas fa-users"></i> USERS</li></a>
-                    {% if request.user.is_authenticated %}
-                        <a href="{% url 'log_out' %}"><li><i class="fas fa-sign-out-alt"></i> LOG OUT</li></a>
-                        <a href="{% url 'userpage' request.user.id %}"><li><i class="fas fa-sign-out-alt"></i> {{ request.user.username }}</li></a>
-                    {% else %}
-                        <a  href="{% url 'log_in' %}"><li><i class="fas fa-sign-out-alt"></i> LOG IN</li></a>
-                    {% endif %}
-                    {% if request.user.is_staff %}
-                        <a href="{% url 'dashboard' %}"><LI><i class="fas fa-user-cog"></i> ADMIN</LI></a>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    
+      </div>
+    </nav>       
         <!-- navbar end -->
-
+<div class="container">
 {% block content %}
 
 {% endblock %}
@@ -125,6 +118,8 @@
     <!-- CKeditor -->
 	<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
     <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    {% block footer %}
+    {% endblock %}
 </body>
 
 </html>

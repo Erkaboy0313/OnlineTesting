@@ -17,6 +17,7 @@
             <div class="card">
                 <div class="card-body text-center">
                     <h6 class="mb-4 text-muted">Create new account</h6>
+                    {% include 'partials/_flash_messages.html'%}
                     <form action="" method="post">
                         {% csrf_token %}    
                         <div class="mb-3 text-start">

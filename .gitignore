@@ -14,4 +14,3 @@ media/
 settings.json
 venv
 migrations/
-db.sqlite3

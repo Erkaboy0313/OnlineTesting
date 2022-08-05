@@ -74,16 +74,16 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="full">
-                            <div class="heading_main text_align_center">
+                            <div class="heading_main" style="text-align: center; margin: 35px 0;">
                                <h2><span>Popular </span>Courses</h2>
                             </div>
                           </div>
                     </div>
                     {% for subject in subjects %}
-                    <div class="col-md-2">
-                        <div class="full blog_img_popular">
+                    <div class="col-md-3">
+                        <div class="full blog_img_popular" style="text-align: center;">
                            <img class="img-responsive" src="{{ subject.imageURL }}" alt="#" />
-                           <h4><a href="{% url 'subjects' subject.id %}">{{ subject.name }}</a></h4>
+                           <h4><a style="text-decoration: none;" href="{% url 'subjects' subject.id %}">{{ subject.name }}</a></h4>
                         </div>
                     </div>
                     {% endfor %}
@@ -98,13 +98,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="full">
-                            <div class="heading_main text_align_center">
+                            <div class="heading_main" style="text-align: center; margin: 35px 0;">
                                <h2><span>Derictions / Yo'nalishlar</span></h2>
                             </div>
                           </div>
                     </div>
                   </div>
-                   <div class="row">
+                   <div class="row" style="margin-bottom: 50px;">
                     <div class="col-lg-12">
                         <div id="demo" class="carousel slide" data-ride="carousel">
     
@@ -114,7 +114,7 @@
                                     <div class="row">
                                         {% for subject in subjects %}
                                         <div class="col-lg-3 col-md-3 col-sm-4">
-                                           <div class="full blog_img_popular">
+                                           <div class="full blog_img_popular" style="text-align: center;">
                                               <img class="img-responsive" src="{{ subject.imageURL }}" />
                                               <h4>{{ subject.name }}</h4>
                                             </div>

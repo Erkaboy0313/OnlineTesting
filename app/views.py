@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 import docx2txt
 from django.db.models.functions import TruncMonth
 from django.db.models import Count
+from django.contrib import messages
 
 def createtest(id, file):
     url = file.split('/')
@@ -81,6 +82,9 @@ def register(request):
             if user:
                 Profile.objects.create(user=user)
                 return redirect(log_in)
+        if form.errors:
+            messages.add_message(request,messages.WARNING,form.errors)
+        
     return render(request, 'app/signup.html', {})
 
 
@@ -130,7 +134,7 @@ def start_single_test(request, id):
                 }
                 is_next = Test.objects.filter(block_id=test.block.id).order_by('id')
                 if len(is_next) > 1:
-                    for i in len(is_next):
+                    for i in range(len(is_next)):
                         if is_next[i].subject_category.id == id:
                             if i == 0:
                                 context['next'] = is_next[i + 1].subject_category.id
@@ -140,14 +144,6 @@ def start_single_test(request, id):
                                 context['next'] = is_next[i + 1].subject_category.id
                                 context['prev'] = is_next[i - 1].subject_category.id
 
-                        # if is_next[0].subject_category.id == id:
-                        #     context['next'] = Test.objects.filter(block_id=test.block.id).order_by('id')[
-                        #         1].subject_category.id
-                        #     context['prev'] = ''
-                        # else:
-                        #     context['next'] = ''
-                        #     context['prev'] = Test.objects.filter(block_id=test.block.id).order_by('id')[
-                        #         0].subject_category.id
                 print(context)
                 return render(request, 'app/test.html', context)
 
@@ -173,7 +169,6 @@ def start_single_test(request, id):
                         print(i)
                         if is_next[i].subject_category.id == id:
                             if i == 0:
-                                print('Birintchi holat ------------------------')
                                 context['next'] = is_next[i + 1].subject_category.id
                             elif i == len(is_next) - 1:
                                 context['prev'] = is_next[i - 1].subject_category.id

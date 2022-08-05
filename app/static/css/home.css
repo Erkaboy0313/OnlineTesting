@@ -4,11 +4,23 @@
     box-sizing: border-box;
     font-family: sans-serif;
 }
+#navbarNavAltMarkup .navbar-nav .menu1{
+    color: black;
+   padding-left: 20px;
+    font-weight: bold;
+}
+#navbarNavAltMarkup .navbar-nav .activ{
+    color: chocolate !important;
+}
+#navbarNavAltMarkup .navbar-nav .menu1:hover{
+    cursor: pointer;
+    color: chocolate;
+}
 
 /* ----------------navbar start-------------------- */
-.navbar1 div {
+/* .navbar1 div {
     display: inline-block;
-}
+} */
 
 .navbar1 {
     z-index: 100;
@@ -20,9 +32,11 @@
     padding: 0px 50px;
     color: black;
     background-color: white;
+    border-bottom: 1px solid black;
+    box-shadow: grey 2px 1px ;
 }
 
-.navbar1 .main_logo {
+/* .navbar1 .main_logo {
     cursor: pointer;
     width: 230px;
     height: 80px;
@@ -48,7 +62,7 @@
 
 .activ{
     color: chocolate !important;
-}
+} */
 
 /* --------------navbar end----------------- */
 
@@ -80,6 +94,7 @@
 .tabbar_menu ul li {
     display: inline-block;
     padding: 30px 10px;
+    padding-left: 55px;
     text-align: center;
     font-size: 17px;
     cursor: pointer;
@@ -95,13 +110,12 @@
     cursor: pointer;
 }
 
-/* ---------------tabbar end----------------- */
-
 /* ---------------content start--------------*/
 .content {
     margin-top: 100px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 20px;
 }
 
 .left_content {
@@ -118,17 +132,66 @@
     color: #002147;
 }
 /* ---------------content end--------------*/
+@media only screen and (max-width: 500px){
+    .tabbar_menu{
+        width: 90%;
+        position: relative;
+        padding-bottom: 0;
+    }
+    .tabbar_menu ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .tabbar_menu ul li {
+        /* display: inline-block;  */
+        padding-left: 20px; 
+        text-align: center;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    .content {
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        margin-left: 10px;
+    }
+    
+    .left_content {
+        padding: 20px 50px 20px 0px;
+    }
+    
+    .left_content h1 {
+        font-weight: bold;
+        width: 437px;
+        border-bottom: 5px  solid #002147;
+    }
+    .rihgt_content{
+        margin-bottom: 20px;
+        width: 90%;
+    }
+    .quick_links{
+        padding-left: 60px;
+    }
+}
+
+/* ---------------tabbar end----------------- */
+
+
 /* ---------------footer start------------ */
 .footer {
     width: 100%;
-    height: 300px;
+    /* height: 300px; */
     padding: 50px;
     background-color: #0B1C2C;
     color: white;
 }
 
 .footer div {
-    height: 100%;
+    height: 100%;       
 }
 
 .quick_links h3{

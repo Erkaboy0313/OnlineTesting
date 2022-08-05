@@ -15,7 +15,7 @@
                   <form accept-charset="utf-8" method="post" enctype="multipart/form-data">
                      {% csrf_token %}
                      {{form|crispy}}
-                     <input type="submit" class="btn btn-success" style="float: right;">Submit
+                     <input type="submit" class="btn btn-success" style="float: right; margin-top:10px;">Submit
                   </form>
                 </div>
               </div>
@@ -30,8 +30,13 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
+                    {% if profile.imageURL %}
+                    <img src="{{ profile.imageURL }}" alt="Admin" class="rounded-circle" width="150">
+                    {% else %}
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                    {% endif %}
                   </div>
+                  <b><p style='text-align:center'>{{ profile.user.username }}</p></b>
                 </div>
               </div>
             </div>
@@ -85,47 +90,37 @@
           </div>
         </div>
     </div>
-    <div class="content" style="margin-bottom: 50px;">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-header">User score</div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>№</th>
-                                            <th>Subject name</th>
-                                            <th>Tottal questions</th>
-                                            <th>Score</th>
-                                            <th>Date</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for attemp in attemps %}
-                                        <tr>
-                                            <th>{{ forloop.counter }}</th>
-                                            <th scope="row">
-                                                <a>{% subjects attemp %}</a><br>
-                                            </th>
-                                            <th>{% tottal attemp %}</th>
-                                            <th>{% score attemp %}</th>
-                                            <th>{{ attemp.started_time }}</th>
-                                            <td>
+      <div class="results">
+          <table class="table table-hover">
+            <thead>
+              <tr><h3> User score</h3></tr>
+              <tr>
+                <th scope="col">№</th>
+                <th scope="col">Subject name</th>
+                <th scope="col">Total questions</th>
+                <th scope="col">Score</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+           {% for attemp in attemps %}
+            <tr>
+              <th>{{ forloop.counter }}</th>
+              <th scope="row">
+                  <a>{% subjects attemp %}</a><br>
+              </th>
+              <th>{% tottal attemp %}</th>
+              <th>{% score attemp %}</th>
+              <th>{{ attemp.started_time }}</th>
+              <td>
 
-                                            <a class="btn btn-alert" style="background-color: red" href="{% url 'delete_attempt' attemp.id %}" ><i class="fa fa-trash"></i>Delate</a><br>
-                                            </td>
-                                           </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+              <a class="btn btn-alert" style="background-color: red" href="{% url 'delete_attempt' attemp.id %}" ><i class="fa fa-trash"></i>Delate</a><br>
+              </td>
+            </tr>
+          {% endfor %}
+            </tbody>
+          </table>
         </div>
-    </div>
-    
+  </div>    
+
 {% endblock %}

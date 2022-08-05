@@ -5,6 +5,7 @@ function choose(test_id , question_id , value){
         headers:{
             'Content-Type':'application/json',
             'X-CSRFToken':csrftoken,
+            
         },
         body:JSON.stringify({
             'test_id':test_id,

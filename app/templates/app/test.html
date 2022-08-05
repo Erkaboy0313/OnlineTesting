@@ -1,15 +1,10 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 {% load static %}
 <head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Online Test</title>
-    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='' rel='stylesheet'>
-    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-    <style>@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');</style>
-    <link href="{% static 'test/css/style.css' %}" rel='stylesheet'>
+    <title>Test</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/test.css' %}">
     <script>
         function getCookie(name) {
             let cookieValue = null;
@@ -29,200 +24,140 @@
         const csrftoken = getCookie('csrftoken');
     </script>
 </head>
-<body oncontextmenu='return false' class='snippet-body'>
-
-<div class="start-button" onload="start()">
-    <h1 class="text-danger mt-3">Python <span class="badge bg-dark timer" id="hide-time">Seconds Left : <span
-            id="time-left">30</span></span></h1>
-</div>
-{% if questions %}
-<div class="container mt-sm-5 my-1">
-    <div class="question ml-sm-5 pl-sm-5 pt-2">
-        {% for question in questions %}
-            <div class="py-2 h5"><b>{{ forloop.counter }}. {{ question.question }}</b></div>
-            <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                <label class="options">{{ question.var1 }}
-                    <input type="radio" name="radio{{ question.id }}"><span class="checkmark"
-                                                                            onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var1 }}`);checked({{ question.id }})"></span>
-                </label>
-                <label class="options">{{ question.var2 }}
-                    <input type="radio" name="radio{{ question.id }}"> <span class="checkmark"
-                                                                             onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var2 }}`);checked({{ question.id }})"></span>
-                </label> <label class="options">{{ question.var3 }}
-                <input type="radio" name="radio{{ question.id }}"> <span class="checkmark"
-                                                                         onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var3 }}`);checked({{ question.id }})"></span>
-            </label> <label class="options">{{ question.var4 }}
-                <input type="radio" name="radio{{ question.id }}"> <span class="checkmark"
-                                                                         onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var4 }}`);checked({{ question.id }})"></span>
-            </label>
-            </div>
-        {% endfor %}
-    </div>
-        {% if next and prev %}
-        <div class="d-flex align-items-center pt-3">
-            <div class="ml-auto mr-sm-5">
-                <button class="btn btn-success"><a href="{% url 'test' prev %}">Back</a></button>
-                <button class="btn btn-success"><a href="{% url 'test' next %}">Next</a></button>
-            </div>
-        </div>
-        {% elif next %}
-            <div class="d-flex align-items-center pt-3">
-                <div class="ml-auto mr-sm-5">
-                    <button class="btn btn-success"><a href="{% url 'test' next %}">Next</a></button>
-                </div>
-            </div>
-        {% elif prev %}
-            <div class="align-items-center pt-3" style="float: left;">
-                <div class="ml-auto mr-sm-5">
-                    <button class="btn btn-success"><a href="{% url 'test' prev %}">Back</a></button>
-                </div>
-            </div>
-            <div class="d-flex align-items-center pt-3">
-                <div class="ml-auto mr-sm-5">
-                    <button class="btn btn-success"><a onclick="finish({{ test_id }})">Finish</a></button>
-                </div>
-            </div>
-        {% endif %}
-        </div>
-        <div class="answers-sheet" id="answer-sheet">
-            {% for q in questions %}
-                <div class="marks" id="q{{ q.id }}">{{ forloop.counter }}</div>
-            {% endfor %}
-        </div>
-
-    {% else %}
-        <div class="container mt-sm-5 my-1" id='questions' data-id="{{ test_id }}" style="display: block;">
-            <div class="question ml-sm-5 pl-sm-5 pt-2">
-                {% for question in checked_questions %}
-                    <div class="py-2 h5"><b>{{ forloop.counter }}. {{ question.question.question }}</b></div>
-                    <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                        {% if question.user_asnwer %}
-                            {% if question.question.var1 == question.user_asnwer %}
-                                <label class="options">{{ question.question.var1 }}
-                                    <input type="radio" name="radio{{ question.question.id }}" checked><span
-                                            class="checkmark"
-                                            onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var2 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var3 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var4 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                            {% elif question.question.var2 == question.user_asnwer %}
-                                <label class="options">{{ question.question.var1 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"><span class="checkmark"
-                                                                                                     onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var2 }}
-                                    <input type="radio" name="radio{{ question.question.id }}" checked> <span
-                                            class="checkmark"
-                                            onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var3 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var4 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                            {% elif question.question.var3 == question.user_asnwer %}
-                                <label class="options">{{ question.question.var1 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"><span class="checkmark"
-                                                                                                     onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var2 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var3 }}
-                                    <input type="radio" name="radio{{ question.question.id }}" checked> <span
-                                            class="checkmark"
-                                            onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var4 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                            {% elif question.question.var4 == question.user_asnwer %}
-                                <label class="options">{{ question.question.var1 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"><span class="checkmark"
-                                                                                                     onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var2 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var3 }}
-                                    <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                      onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                                <label class="options">{{ question.question.var4 }}
-                                    <input type="radio" name="radio{{ question.question.id }}" checked> <span
-                                            class="checkmark"
-                                            onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`); checked({{ question.question.id }})"></span>
-                                </label>
-                            {% endif %}
-                        {% else %}
-                            <label class="options">{{ question.question.var1 }}
-                                <input type="radio" name="radio{{ question.question.id }}"><span class="checkmark"
-                                                                                                 onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`); checked({{ question.question.id }})"></span>
-                            </label>
-                            <label class="options">{{ question.question.var2 }}
-                                <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                  onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`); checked({{ question.question.id }})"></span>
-                            </label>
-                            <label class="options">{{ question.question.var3 }}
-                                <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                  onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`); checked({{ question.question.id }})"></span>
-                            </label>
-                            <label class="options">{{ question.question.var4 }}
-                                <input type="radio" name="radio{{ question.question.id }}"> <span class="checkmark"
-                                                                                                  onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`); checked({{ question.question.id }})"></span>
-                            </label>
-                        {% endif %}
+<body>
+<div class="container1 row">
+    <h1 id="fan_nomi"><span class="fan_name">Fan nomi</span><span class="time"> 59:59</span></h1>
+        {% if questions %}
+            <div class="col-8 questions">
+                {% for question in questions %}
+                    <div class="question">
+                        <p><b>{{ forloop.counter }}. {{ question.question }}</b></p>
+                        <input type="radio" name="radio{{ question.id }}" onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var1 }}`);checked({{ question.id }})">
+                        <label for="radio{{ question.id }}" onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var1 }}`);checked({{ question.id }})">{{ question.var1 }}</label><br>
+                        
+                        <input type="radio" name="radio{{ question.id }}" onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var2 }}`);checked({{ question.id }})">
+                        <label for="radio{{ question.id }}" onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var2 }}`);checked({{ question.id }})">{{ question.var2 }}</label><br>
+                        
+                        <input type="radio" name="radio{{ question.id }}" onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var3 }}`);checked({{ question.id }})">
+                        <label for="radio{{ question.id }}" onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var3 }}`);checked({{ question.id }})">{{ question.var3 }}</label><br>
+                        
+                        <input type="radio" name="radio{{ question.id }}" onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var4 }}`);checked({{ question.id }})">
+                        <label for="radio{{ question.id }}" onclick="choose({{ test_id }} , {{ question.id }} , `{{ question.var4 }}`);checked({{ question.id }})">{{ question.var4 }}</label><br>
                     </div>
                 {% endfor %}
+                {% if next and prev %}
+                    <button style="margin-right: 20px; margin-top: 20px;" type="button" class="btn btn-info"><a href="{% url 'test' prev %}">Back</a></button>
+                    <button style="margin-top: 20px;" type="button" class="btn btn-info"><a href="{% url 'test' next %}">Next</a></button>
+                {% elif next %}
+                    <button style="margin-top: 20px;" type="button" class="btn btn-info"><a href="{% url 'test' next %}">Next</a></button>
+                {% elif prev %}
+                    <button style="margin-right: 20px; margin-top: 20px;" type="button" class="btn btn-info"><a href="{% url 'test' prev %}">Back</a></button>
+                    <button style="margin-top: 20px;" type="button" class="btn btn-info"><a onclick="finish({{ test_id }})">Finish</a></button>             
+                {% endif %}
             </div>
-            {% if next %}
-                <div class="d-flex align-items-center pt-3">
-                    <div class="ml-auto mr-sm-5">
-                        <button class="btn btn-success"><a href="{% url 'test' next %}">Next</a></button>
-                    </div>
+            <div class="col-4 savollar">
+                {% for q in questions %}
+                    <div class="savol_number" id="q{{ q.id }}">{{ forloop.counter }}</div>
+                {% endfor %}
+            </div>
+
+    {% else %}
+        <div class="col-8 questions">
+            {% for question in checked_questions %}
+                <div class="question">
+                    <p><b>{{ forloop.counter }}. {{ question.question.question }}</b></p>
+                    {% if question.user_asnwer %}
+                        {% if question.question.var1 == question.user_asnwer %}
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})" checked>
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">{{ question.question.var1 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">{{ question.question.var2 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">{{ question.question.var3 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">{{ question.question.var4 }}</label><br>
+                        {% elif question.question.var2 == question.user_asnwer %}
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">{{ question.question.var1 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})" checked>
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">{{ question.question.var2 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">{{ question.question.var3 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">{{ question.question.var4 }}</label><br>
+
+                        {% elif question.question.var3 == question.user_asnwer %}
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">{{ question.question.var1 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">{{ question.question.var2 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})"checked>
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">{{ question.question.var3 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">{{ question.question.var4 }}</label><br>
+
+                        {% elif question.question.var4 == question.user_asnwer %}
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">{{ question.question.var1 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">{{ question.question.var2 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">{{ question.question.var3 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})"checked>
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">{{ question.question.var4 }}</label><br>
+                        {% endif %}
+                        {% else %}
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var1 }}`);checked({{ question.question.id }})">{{ question.question.var1 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var2 }}`);checked({{ question.question.id }})">{{ question.question.var2 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var3 }}`);checked({{ question.question.id }})">{{ question.question.var3 }}</label><br>
+                            
+                            <input type="radio" name="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">
+                            <label for="radio{{ question.question.id }}" onclick="choose({{ test_id }} , {{ question.question.id }} , `{{ question.question.var4 }}`);checked({{ question.question.id }})">{{ question.question.var4 }}</label><br>
+                    {% endif %}
                 </div>
+            {% endfor %}
+            
+            {% if next and prev %}
+                <button style="margin-right: 20px; margin-top: 20px;" type="button" class="btn btn-info"><a href="{% url 'test' prev %}">Back</a></button>
+                <button style="margin-top: 20px;" type="button" class="btn btn-info"><a href="{% url 'test' next %}">Next</a></button>
+            {% elif next %}
+                <button style="margin-top: 20px;" type="button" class="btn btn-info"><a href="{% url 'test' next %}">Next</a></button>
             {% elif prev %}
-                <div class="align-items-center pt-3" style="float: left;">
-                    <div class="ml-auto mr-sm-5">
-                        <button class="btn btn-success"><a href="{% url 'test' prev %}">Back</a></button>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center pt-3">
-                    <div class="ml-auto mr-sm-5">
-                        <button class="btn btn-success"><a onclick="finish({{ test_id }})">Finish</a></button>
-                    </div>
-                </div>
+                <button style="margin-right: 20px; margin-top: 20px;" type="button" class="btn btn-info"><a href="{% url 'test' prev %}">Back</a></button>
+                <button style="margin-top: 20px;" type="button" class="btn btn-info"><a onclick="finish({{ test_id }})">Finish</a></button>             
             {% endif %}
         </div>
-        <div class="answers-sheet" id="answer-sheet">
-            {% for q in checked_questions %}
-                {% if q.user_asnwer %}
-                    <div class="marks" id="q{{ q.question.id }}"
-                         style="background-color: blue;color: white;">{{ forloop.counter }}</div>
-                {% else %}
-                    <div class="marks" id="q{{ q.question.id }}">{{ forloop.counter }}</div>
-                {% endif %}
-            {% endfor %}
+        <div class="col-4 savollar">
+                {% for q in checked_questions %}
+                    {% if q.user_asnwer %}
+                        <div class="savol_number" style="background-color: blue;color: white;" id="q{{ q.question.id }}">{{ forloop.counter }}</div>
+                    {% else %}
+                        <div class="savol_number" id="q{{ q.question.id }}">{{ forloop.counter }}</div>
+                    {% endif %}
+                {% endfor %}
         </div>
     {% endif %}
-<script type='text/javascript'
-        src='https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js'></script>
-<script type='text/javascript' src="{% static 'test/js/testing.js' %}"></script>
+</div>
 </body>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/test.js' %}"></script>
+<script src="{% static 'test/js/testing.js' %}"></script>
+
 </html>
